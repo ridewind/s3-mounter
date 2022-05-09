@@ -1,18 +1,24 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
     app: s3-provider
   name: s3-provider
 spec:
+  selector:
+    matchLabels:
+      app: s3-provider
   template:
     metadata:
       labels:
         app: s3-provider
     spec:
+      imagePullSecrets:
+      - name: regcred
       containers:
       - name: s3fuse
-        image: zretc/s3-mounter
+        image: swr.cn-north-4.myhuaweicloud.com/zker/s3-mounter:latest
+        imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
         envFrom:
